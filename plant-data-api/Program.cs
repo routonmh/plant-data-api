@@ -12,10 +12,12 @@ namespace PlantDataAPI
     public class Program
     {
         public static string ConnectionString { get; set; }
+        public static string JwtSigningKey { get; set; }
 
         public static void Main(string[] args)
         {
             ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            JwtSigningKey = Environment.GetEnvironmentVariable("JWT_SIGNING_KEY");
             CreateHostBuilder(args).Build().Run();
         }
 

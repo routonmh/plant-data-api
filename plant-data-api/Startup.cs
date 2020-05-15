@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PlantDataAPI.Middlewares;
 
 namespace PlantDataAPI
 {
@@ -61,7 +62,7 @@ namespace PlantDataAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMvc();
+            // app.UseMiddleware<RequireLocalAuthentication>();
 
             // Setup API Documentation
             app.UseSwagger();
@@ -70,6 +71,8 @@ namespace PlantDataAPI
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Data API");
                 options.RoutePrefix = "docs";
             });
+
+            app.UseMvc();
         }
     }
 }

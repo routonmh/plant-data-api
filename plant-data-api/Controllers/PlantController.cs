@@ -7,6 +7,9 @@ using PlantDataAPI.Models.Entities;
 
 namespace PlantDataAPI.Controllers
 {
+    /// <summary>
+    ///
+    /// </summary>
     [ApiController]
     [Route("api/plant")]
     public class PlantController : Controller
@@ -17,7 +20,7 @@ namespace PlantDataAPI.Controllers
         /// <param name="plantId"></param>
         /// <returns></returns>
         [HttpGet("{plantId}")]
-        public async Task<ActionResult<Plant>> GetPlantByID(int plantId)
+        public async Task<ActionResult<Plant>> GetPlantByID([FromRoute] int plantId)
         {
             Plant plant = await PlantModel.GetPlantByID(plantId);
 
@@ -78,6 +81,8 @@ namespace PlantDataAPI.Controllers
         {
             if (await PlantModel.AddPlant(plant))
                 return Ok();
+
+
             return new BadRequestResult();
         }
 

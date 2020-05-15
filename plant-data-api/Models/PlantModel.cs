@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using PlantDataAPI.Models.Entities;
+using Attribute = PlantDataAPI.Models.Entities.Attribute;
 using DbConnection = PlantDataAPI.Utilities.DBs.DbConnection;
 
 namespace PlantDataAPI.Models
@@ -21,7 +23,7 @@ namespace PlantDataAPI.Models
             using (DbConnection db = new DbConnection())
             {
                 MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "SELECT PlantID, CommonName, ScientificName, PlantDescription " +
+                cmd.CommandText = "SELECT PlantID, CommonName, ScientificName, PlantDescription, IsEdible " +
                                   "FROM plant WHERE PlantID = @PlantID";
                 cmd.Parameters.AddWithValue("@PlantID", id);
 
@@ -35,7 +37,8 @@ namespace PlantDataAPI.Models
                         PlantID = id,
                         CommonName = reader["CommonName"] as string ?? null,
                         ScientificName = reader["ScientificName"] as string ?? null,
-                        PlantDescription = reader["PlantDescription"] as string ?? null
+                        PlantDescription = reader["PlantDescription"] as string ?? null,
+                        IsEdible =  Convert.ToBoolean(reader["IsEdible"])
                     };
                 }
             }
@@ -146,13 +149,14 @@ namespace PlantDataAPI.Models
             using (DbConnection db = new DbConnection())
             {
                 MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "INSERT INTO plant (PlantID, CommonName, ScientificName, PlantDescription)" +
-                                  "VALUES (@PlantID, @CommonName, @ScientificName, @PlantDescription)";
+                cmd.CommandText = "INSERT INTO plant (PlantID, CommonName, ScientificName, PlantDescription, IsEdible)" +
+                                  "VALUES (@PlantID, @CommonName, @ScientificName, @PlantDescription, @IsEdible)";
 
                 cmd.Parameters.AddWithValue("@PlantID", plant.PlantID);
                 cmd.Parameters.AddWithValue("@CommonName", plant.CommonName);
                 cmd.Parameters.AddWithValue("@ScientificName", plant.ScientificName);
                 cmd.Parameters.AddWithValue("@PlantDescription", plant.PlantDescription);
+                cmd.Parameters.AddWithValue("@IsEdible", plant.IsEdible);
 
                 success = await cmd.ExecuteNonQueryAsync() > 0;
             }
