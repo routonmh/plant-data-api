@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,16 +18,26 @@ using PlantDataAPI.Middlewares;
 
 namespace PlantDataAPI
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options => { options.EnableEndpointRouting = false; })
@@ -60,16 +71,37 @@ namespace PlantDataAPI
             services.AddSwaggerGenNewtonsoftSupport();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="logger"></param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            // app.UseMiddleware<RequireLocalAuthentication>();
-
             // Setup API Documentation
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Data API");
                 options.RoutePrefix = "docs";
+            });
+
+            // app.UseMiddleware<RequireLocalAuthentication>();
+
+            app.Use(async (context, next) =>
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                logger.LogInformation("Request from: {0} on {1}",
+                    context.Request.Host, context.Request.Path);
+
+                await next();
+
+                sw.Stop();
+                logger.LogInformation("Finished: {0} - {1} {2}ms",
+                    context.Request.Path, context.Response.StatusCode,
+                    sw.ElapsedMilliseconds);
             });
 
             app.UseMvc();

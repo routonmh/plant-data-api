@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PlantDataAPI.Models;
 using PlantDataAPI.Models.Entities;
+using Attribute = PlantDataAPI.Models.Entities.Attribute;
 
 namespace PlantDataAPI.Controllers
 {
@@ -79,10 +81,9 @@ namespace PlantDataAPI.Controllers
         [HttpPost("add-plant")]
         public async Task<ActionResult> AddPlant([Required, FromBody] Plant plant)
         {
+
             if (await PlantModel.AddPlant(plant))
                 return Ok();
-
-
             return new BadRequestResult();
         }
 

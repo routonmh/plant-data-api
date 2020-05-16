@@ -146,19 +146,26 @@ namespace PlantDataAPI.Models
         {
             bool success = false;
 
-            using (DbConnection db = new DbConnection())
+            try
             {
-                MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "INSERT INTO plant (PlantID, CommonName, ScientificName, PlantDescription, IsEdible)" +
-                                  "VALUES (@PlantID, @CommonName, @ScientificName, @PlantDescription, @IsEdible)";
+                using (DbConnection db = new DbConnection())
+                {
+                    MySqlCommand cmd = await db.GetCommandAsync();
+                    cmd.CommandText = "INSERT INTO plant (PlantID, CommonName, ScientificName, PlantDescription, IsEdible)" +
+                                      "VALUES (@PlantID, @CommonName, @ScientificName, @PlantDescription, @IsEdible)";
 
-                cmd.Parameters.AddWithValue("@PlantID", plant.PlantID);
-                cmd.Parameters.AddWithValue("@CommonName", plant.CommonName);
-                cmd.Parameters.AddWithValue("@ScientificName", plant.ScientificName);
-                cmd.Parameters.AddWithValue("@PlantDescription", plant.PlantDescription);
-                cmd.Parameters.AddWithValue("@IsEdible", plant.IsEdible);
+                    cmd.Parameters.AddWithValue("@PlantID", plant.PlantID);
+                    cmd.Parameters.AddWithValue("@CommonName", plant.CommonName);
+                    cmd.Parameters.AddWithValue("@ScientificName", plant.ScientificName);
+                    cmd.Parameters.AddWithValue("@PlantDescription", plant.PlantDescription);
+                    cmd.Parameters.AddWithValue("@IsEdible", plant.IsEdible);
 
-                success = await cmd.ExecuteNonQueryAsync() > 0;
+                    success = await cmd.ExecuteNonQueryAsync() > 0;
+                }
+            }
+            catch (MySqlException ex)
+            {
+
             }
 
             return success;
@@ -173,16 +180,23 @@ namespace PlantDataAPI.Models
         {
             bool success = false;
 
-            using (DbConnection db = new DbConnection())
+            try
             {
-                MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "INSERT INTO attribute (PlantID, AttributeDescription) " +
-                                  "VALUES (@PlantID, @AttributeDescription);";
-                cmd.Parameters.AddWithValue("@PlantID", attribute.PlantID);
-                cmd.Parameters.AddWithValue("@AttributeDescription", attribute.AttributeDescription);
+                using (DbConnection db = new DbConnection())
+                {
+                    MySqlCommand cmd = await db.GetCommandAsync();
+                    cmd.CommandText = "INSERT INTO attribute (PlantID, AttributeDescription) " +
+                                      "VALUES (@PlantID, @AttributeDescription);";
+                    cmd.Parameters.AddWithValue("@PlantID", attribute.PlantID);
+                    cmd.Parameters.AddWithValue("@AttributeDescription", attribute.AttributeDescription);
 
-                success = await cmd.ExecuteNonQueryAsync() > 0;
+                    success = await cmd.ExecuteNonQueryAsync() > 0;
+                }
             }
+            catch (MySqlException ex)
+            {
+
+            } 
 
             return success;
         }
@@ -196,16 +210,23 @@ namespace PlantDataAPI.Models
         {
             bool success = false;
 
-            using (DbConnection db = new DbConnection())
+            try
             {
-                MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "INSERT INTO region_shape_file (PlantID, LinkToFile) VALUES " +
-                                  "(@PlantID, @LinkToFile);";
+                using (DbConnection db = new DbConnection())
+                {
+                    MySqlCommand cmd = await db.GetCommandAsync();
+                    cmd.CommandText = "INSERT INTO region_shape_file (PlantID, LinkToFile) VALUES " +
+                                      "(@PlantID, @LinkToFile);";
 
-                cmd.Parameters.AddWithValue("@PlantID", regionShapeFile.PlantID);
-                cmd.Parameters.AddWithValue("@LinkToFile", regionShapeFile.LinkToFile);
+                    cmd.Parameters.AddWithValue("@PlantID", regionShapeFile.PlantID);
+                    cmd.Parameters.AddWithValue("@LinkToFile", regionShapeFile.LinkToFile);
 
-                success = await cmd.ExecuteNonQueryAsync() > 0;
+                    success = await cmd.ExecuteNonQueryAsync() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                
             }
 
             return success;
@@ -220,16 +241,23 @@ namespace PlantDataAPI.Models
         {
             bool success = false;
 
-            using (DbConnection db = new DbConnection())
+            try
             {
-                MySqlCommand cmd = await db.GetCommandAsync();
-                cmd.CommandText = "INSERT INTO image (PlantID, LinkToFile) " +
-                                  "VALUES (@PlantID, @LinkToFile);";
+                using (DbConnection db = new DbConnection())
+                {
+                    MySqlCommand cmd = await db.GetCommandAsync();
+                    cmd.CommandText = "INSERT INTO image (PlantID, LinkToFile) " +
+                                      "VALUES (@PlantID, @LinkToFile);";
 
-                cmd.Parameters.AddWithValue("@PlantID", image.PlantID);
-                cmd.Parameters.AddWithValue("@LinkToFile", image.LinkToFile);
+                    cmd.Parameters.AddWithValue("@PlantID", image.PlantID);
+                    cmd.Parameters.AddWithValue("@LinkToFile", image.LinkToFile);
 
-                success = await cmd.ExecuteNonQueryAsync() > 0;
+                    success = await cmd.ExecuteNonQueryAsync() > 0;
+                }
+            }
+            catch (MySqlException ex)
+            {
+
             }
 
             return success;
