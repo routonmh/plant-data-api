@@ -16,7 +16,6 @@
       "environmentVariables": {
         "DB_CONNECTION_STRING": "Data Source=localhost;Initial Catalog=plantdb;User ID=plantserver;Password=pass;Pooling=True;",
         "JWT_SIGNING_KEY": "SUPER_SECRET_KEY0123"
-
       }
     }
   }

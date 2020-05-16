@@ -9,6 +9,9 @@ using DbConnection = PlantDataAPI.Utilities.DBs.DbConnection;
 
 namespace PlantDataAPI.Models
 {
+    /// <summary>
+    ///
+    /// </summary>
     public static class PlantModel
     {
         /// <summary>

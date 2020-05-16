@@ -4,6 +4,9 @@ using MySql.Data.MySqlClient;
 
 namespace PlantDataAPI.Utilities.DBs
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class DbConnection : IDisposable
     {
         public MySqlConnection Connection { get; set; }
